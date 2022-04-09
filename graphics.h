@@ -1,0 +1,9 @@
+/*
+Draw line
+Draw image
+wait for vsync
+Draw point
+Clear Screen
+
+etc..
+*/
