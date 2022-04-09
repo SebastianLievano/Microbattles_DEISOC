@@ -11,7 +11,6 @@ screen.
 #include "stdbool.h"
 
 
-
 void swap(int* a, int* b){
     int temp = *a;
     *a = *b;
@@ -62,8 +61,40 @@ void wait_for_vsync(){
     }
 }
 
-void plot_pixel(int x, int y, short int line_color);
+bool checkBounds(int x, int y){
+    if(x < 0 || y < 0) return false;
+    if(x >= RESOLUTION_X || y >= RESOLUTION_Y) return false;
+    return true;
+}
 
-void draw_rectange(int x1, int y1, int width, int length, short int color);
+void plot_pixel(int x, int y, short int line_color)
+{
+    *(short int *)(pixel_buffer_start + (y << 10) + (x << 1)) = line_color;
+}
 
-void draw_image(int start_x, int start_y, int imageId, int length, int width);
+void draw_rectange(int x1, int y1, int width, int height, short int color){
+    unsigned itX, itY;
+    int plotX, plotY;
+    for(itY = y1; itY < height; ++itY){
+        for(itX = x1; itX < width; ++itX){
+            plotX = itX + x1;
+            plotY = itY + y1;
+            if(checkBounds(plotX, plotY))
+                plot_pixel(plotX, plotY, color);
+        }
+    }
+}
+
+void draw_image(int start_x, int start_y, int image[], int width, int height){
+    unsigned itX, itY;
+    int plotX, plotY, ctr = 0;
+    for(itY = start_y; itY < height; ++itY){
+        for(itX = start_x; itX < width; ++itX){
+            plotX = itX + start_x;
+            plotY = itY + start_y;
+            ctr++;
+            if(checkBounds(plotX, plotY))
+                plot_pixel(plotX, plotY, image[ctr]);
+        }
+    }
+}

@@ -20,8 +20,7 @@
 #define RESOLUTION_X 320
 #define RESOLUTION_Y 240
 
-#include "stdlib.h"
-#include "stdbool.h"
+extern volatile int* pixel_buffer_start;
 
 void draw_line(int x1, int y1, int x2, int y2, short int color);
 
@@ -29,11 +28,13 @@ void clear_screen();
 
 void wait_for_vsync();
 
+void swap(int* a, int* b);
+
 void plot_pixel(int x, int y, short int line_color);
 
 void draw_rectange(int x1, int y1, int width, int length, short int color);
 
-void draw_image(int start_x, int start_y, int imageId, int length, int width);
+void draw_image(int start_x, int start_y, int image[], int width, int height);
 
 
 #endif
