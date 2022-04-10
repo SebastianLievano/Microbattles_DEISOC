@@ -1,7 +1,10 @@
 #include "address_map_arm.h"
 #include "utility.h"
-#include "stdbool.h"
 #include "graphics.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 //Returns  true if in bounds
 bool inBounds(int min, int max, int val){
@@ -25,4 +28,11 @@ bool objectsCollide(int x1, int y1, int width1, int height1, int x2, int y2, int
     return  (maxInt(x1, x2) < minInt(x1 + width1, x2 + width2)
                 &&
             maxInt(y1, y2) < minInt(y1 + height1, y2 + height2));
+}
+
+int getRandom(int min, int max){
+    time_t t;
+    srand((unsigned) time(&t));
+    int num = (rand() % (max - min +  1)) + min;
+    return num;
 }

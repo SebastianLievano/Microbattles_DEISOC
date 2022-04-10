@@ -1,15 +1,21 @@
-#ifndef PLANE.H
-#define PLANE.H
+#ifndef PLANEMB
+#define PLANEMB
 
 #define PLANE_WIDTH 20
 #define PLANE_HEIGHT 15
 #define PLANE_X_SPEED 1
 #define PLANE_INITIAL_X 20
-#define PLANE_MIN_Y 180
+#define FLOOR_Y 180
 #define BULLET_SPEED 2
 #define BULLET_WIDTH 5
-#define BULLET_LENGTH 5
-#define PLANE_MAX_Y_SPEED
+#define BULLET_HEIGHT 5
+#define POWERUP_WIDTH 7
+#define POWERUP_HEIGHT 7
+#define PLANE_MAX_Y_SPEED 3
+#define PLANE_ACCEL_INC 2
+#define PLANE_MAX_ACCEL 4
+
+#include <stdbool.h>
 
 
 
@@ -22,6 +28,7 @@ struct Plane{
 
     short int score;
 
+    int shotsLeft;
     int dX;     //Horizontal velocity of plane
     int dY;     //Vertical velocity of plane
     int accel;  //Vertical acceleration of plane
@@ -37,7 +44,6 @@ struct Bullet{
     int y;
     int dX;
     int lastX;
-    int lastY;
 };
 
 struct Powerup{
@@ -49,6 +55,10 @@ void planeMain();
 
 void initPlanes();
 
+void resetPlanes();
+
+void addNewPowerup(int idx);
+
 void drawPlanes();
 
 bool planeTurn(volatile int* pixel_ctrl_ptr);
@@ -57,9 +67,15 @@ void deletePlanes();
 
 void deleteBullets();
 
+void moveBullets();
+
+void shootBullets();
+
 void movePlane(struct Plane* plane);
 
-int checkCollisions();
+int managePlaneCollision();
+
+int checkCollisions(struct Plane* plane);
 
 bool actOnCollisions();
 

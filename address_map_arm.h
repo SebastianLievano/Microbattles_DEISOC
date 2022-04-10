@@ -1,5 +1,5 @@
-#ifndef ADDRESS_MAP.H
-#define ADDRESS_MAP.H
+#ifndef ADDRESS_MAP
+#define ADDRESS_MAP
 /* This files provides address values that exist in the system */
 
 #define BOARD                 "DE1-SoC"

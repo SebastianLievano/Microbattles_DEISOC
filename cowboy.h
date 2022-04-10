@@ -1,5 +1,4 @@
-#ifndef COWBOY.H
-#define COWBOY.H
-
+#ifndef COWBOY
+#define COWBOY
 
 #endif

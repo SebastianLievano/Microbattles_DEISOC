@@ -1,5 +1,5 @@
-#ifndef GRAPHICS.H
-#define GRAPHICS.H
+#ifndef GRAPHICSMB
+#define GRAPHICSMB
 
 /* VGA colors */
 #define WHITE 0xFFFF
@@ -20,7 +20,7 @@
 #define RESOLUTION_X 320
 #define RESOLUTION_Y 240
 
-extern volatile int* pixel_buffer_start;
+extern volatile int pixel_buffer_start;
 
 void draw_line(int x1, int y1, int x2, int y2, short int color);
 

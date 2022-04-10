@@ -7,8 +7,8 @@ screen.
 
 #include "graphics.h"
 #include "address_map_arm.h"
-#include "stdlib.h"
-#include "stdbool.h"
+#include <stdlib.h>
+#include <stdbool.h>
 
 
 void swap(int* a, int* b){

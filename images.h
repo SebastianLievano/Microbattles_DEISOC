@@ -1,5 +1,5 @@
-#ifndef IMAGES.H
-#define IMAGES.H
+#ifndef IMAGESMB
+#define IMAGESMB
 /*
 ADDED   IMAGE NAME          SIZE    PURPOSE
 Y       cowboyBackground_320x240    Main background image for cowboy game
@@ -21,6 +21,8 @@ int redPlaneRight_20x10[1];
 int redPlaneLeft_20x10[1];        
 int       bluePlaneRight_20x10[1];
 int       bluePlaneLeft_20x10[1];       
+int     planeBullet_test[1];
+int planePowerup_test[1];
 
 #endif
 
