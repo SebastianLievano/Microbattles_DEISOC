@@ -15,4 +15,5 @@ bool inBounds(int min, int max, int val);
 
 int getRandom(int min, int max);
 
+void displayScore(int scoreLeft, int scoreRight);
 #endif

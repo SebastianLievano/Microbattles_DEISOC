@@ -36,3 +36,8 @@ int getRandom(int min, int max){
     int num = (rand() % (max - min +  1)) + min;
     return num;
 }
+
+void displayScore(int leftScore, int rightScore){
+    *((int*)HEX3_HEX0_BASE) = bitCodes[rightScore];
+    *((int*)HEX5_HEX4_BASE) = bitCodes[leftScore];
+}
