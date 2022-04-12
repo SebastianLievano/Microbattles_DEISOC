@@ -5,7 +5,6 @@
 #define PLANE_HEIGHT 15
 #define PLANE_X_SPEED 1
 #define PLANE_INITIAL_X 20
-#define FLOOR_Y 180
 #define BULLET_SPEED 2
 #define BULLET_WIDTH 5
 #define BULLET_HEIGHT 5

@@ -13,6 +13,7 @@
 #define PINK 0xFC18
 #define ORANGE 0xFC00
 #define BLACK 0x0000
+#define TAN 0xAC2B
 
 #define ABS(x) (((x) > 0) ? (x) : -(x))
 
