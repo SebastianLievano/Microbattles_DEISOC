@@ -2,7 +2,7 @@
 #include "cowboy.h"
 #include "address_map_arm.h"
 #include "plane.h"
-#include "images.h"
+
 
 volatile int pixel_buffer_start;
 

@@ -17,15 +17,17 @@ void planeMain(){
     *(pixel_ctrl_ptr + 1) = 0xC8000000;
     pixel_buffer_start = *(pixel_ctrl_ptr + 1);
     bool isRedLoser;
-    draw_image(0,0, planeBackground_320x240, RESOLUTION_X, RESOLUTION_Y);
+    draw_rectangle(0,0, RESOLUTION_X, FLOOR_Y, SKY_BLUE);
+    draw_rectangle(0,FLOOR_Y, RESOLUTION_X, RESOLUTION_Y - FLOOR_Y, FLOOR_GREEN);
     initPlanes();
     drawPlanes();
     wait_for_vsync();
-    
+    displayScore(0,0);
     bool isOver = false;
     while(!isOver){
         isRedLoser = planeTurn(pixel_ctrl_ptr);
         //displayRoundWinner(isRedLoser);
+        displayScore(blue.score, red.score);
         resetPlanes();
         if(blue.score == 5 || red.score == 5) break;
     }
@@ -50,7 +52,7 @@ void resetPlanes(){
     red.isFlying = blue.isFlying = 0;
     blue.x = PLANE_INITIAL_X;
     red.x = RESOLUTION_X - 1 - PLANE_INITIAL_X;
-    red.y = blue.y = FLOOR_Y;
+    red.y = blue.y = FLOOR_Y-PLANE_HEIGHT;
     red.isFiring = blue.isFiring = false;
     red.lastX = red.lastY = blue.lastX = blue.lastY = -1;
     red.shotsLeft = blue.shotsLeft = 0;
@@ -73,6 +75,8 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
     bool notDone = true;
     int dummy;
     bool isRedLoser;
+    addNewPowerup(0);
+    addNewPowerup(1);
     while(notDone){
         deletePlanes();
         deleteBullets();
@@ -103,6 +107,7 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
 
         pixel_buffer_start = *(pixel_ctrl_ptr + 1);
     }
+    deletePlanes();
     return isRedLoser;
 }
 
@@ -122,16 +127,17 @@ int managePlaneCollision(){
 }
 
 void deletePlanes(){
-    if(red.lastX == -1) return;
-    draw_rectange(red.lastX, red.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
-    draw_rectange(blue.lastX, blue.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
+    if(red.lastX != -1)
+        draw_rectangle(red.lastX, red.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
+    if(blue.lastX != -1)
+        draw_rectangle(blue.lastX, blue.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
 }
 
 void deleteBullets(){
     int i;
     for(i = 0; i < 10; ++i){
         if(bullets[i].x == -1) continue;
-        draw_rectange(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, BLUE);
+        draw_rectangle(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, BLUE);
     }
 }
 //Shooting bullets only every 30 frames
@@ -172,13 +178,21 @@ void movePlane(struct Plane* plane){
     int* keyPtr = (int*)KEY_BASE;
     //Manage acceleration
     short int keyChecker = (plane -> isRed) ? 0x1 : 0x8;
+    plane -> lastX = plane -> x;
+    plane -> lastY = plane -> y;
+    if(!plane -> isFlying){
+        if(*keyPtr & keyChecker){
+            plane -> accel = PLANE_ACCEL_INC;
+            plane -> isFlying = true;
+        }
+        return;
+    }
     if(*keyPtr & keyChecker){
-        if(plane -> accel < PLANE_MAX_ACCEL) plane -> accel += PLANE_ACCEL_INC;
-    } else if (plane -> accel > -PLANE_MAX_ACCEL) plane -> accel -= PLANE_ACCEL_INC;
+        if(plane -> accel < PLANE_MAX_ACCEL) plane -> accel -= PLANE_ACCEL_INC;
+    } else if (plane -> accel > -PLANE_MAX_ACCEL) plane -> accel += PLANE_ACCEL_INC;
     //Accelerating plane if accelerating
     if(ABS(plane -> dY) < PLANE_MAX_Y_SPEED)
         plane -> dY += plane -> accel;
-    
     plane -> lastX = plane -> x;
     plane -> lastY = plane -> y;
     //Plane bounces off x sides
@@ -203,36 +217,37 @@ void moveBullets(){
     }
 }
 
-int checkCollisions(struct Plane* plane){
+bool checkCollisions(struct Plane* plane){
     //Check for bullet collisions
     int i;
     for(i = 0; i < numBullets; ++i){
         if(bullets[i].x == -1) continue;
         if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, bullets[i].x, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT)){
-            return 0;   
+            return false;   
         }
     }
     for(i = 0; i < 2; ++i){
         if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT)){
             plane -> isFiring = true;
-            plane -> shotsLeft = 120;
-            draw_rectange(powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT, BLUE);
+            plane -> shotsLeft = 40;
+            draw_rectangle(powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT, SKY_BLUE);
             addNewPowerup(i);
         }
     }
-    if(plane -> isFlying && !(inBounds(0,FLOOR_Y, plane -> y))) return 0;
+    if(plane -> isFlying && !(inBounds(0,FLOOR_Y, plane -> y))) return false;
+    return true;
 }
 
 void drawBullets(){
     int i;
     for(i = 0; i < 10; ++i){
         if(bullets[i].x == -1) continue;
-        draw_image(bullets[i].x, bullets[i].y, planeBullet_test, BULLET_WIDTH, BULLET_HEIGHT);
+        draw_image(bullets[i].x, bullets[i].y, bullet_5x5, BULLET_WIDTH, BULLET_HEIGHT);
     }
 }
 
 void addNewPowerup(int idx){
     powerups[idx].x = getRandom(20, RESOLUTION_X - 20);
     powerups[idx].y = getRandom(20, FLOOR_Y - 20);
-    draw_image(powerups[idx].x, powerups[idx].y, planePowerup_test, POWERUP_WIDTH, POWERUP_WIDTH);
+    draw_image(powerups[idx].x, powerups[idx].y, planePowerup_7x7, POWERUP_WIDTH, POWERUP_WIDTH);
 }

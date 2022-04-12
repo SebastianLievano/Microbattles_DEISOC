@@ -2,7 +2,7 @@
 #define PLANEMB
 
 #define PLANE_WIDTH 20
-#define PLANE_HEIGHT 15
+#define PLANE_HEIGHT 10
 #define PLANE_X_SPEED 1
 #define PLANE_INITIAL_X 20
 #define BULLET_SPEED 2
@@ -74,7 +74,7 @@ void movePlane(struct Plane* plane);
 
 int managePlaneCollision();
 
-int checkCollisions(struct Plane* plane);
+bool checkCollisions(struct Plane* plane);
 
 bool actOnCollisions();
 

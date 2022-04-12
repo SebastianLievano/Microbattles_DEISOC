@@ -49,7 +49,7 @@ void draw_line(int x1, int y1, int x2, int y2, short int color){
 }
 
 void clear_screen(){
-    draw_rectange(0,0, RESOLUTION_X, RESOLUTION_Y, BLACK);
+    draw_rectangle(0,0, RESOLUTION_X, RESOLUTION_Y, BLACK);
 }
 
 void wait_for_vsync(){
@@ -72,11 +72,11 @@ void plot_pixel(int x, int y, short int line_color)
     *(short int *)(pixel_buffer_start + (y << 10) + (x << 1)) = line_color;
 }
 
-void draw_rectange(int x1, int y1, int width, int height, short int color){
+void draw_rectangle(int x1, int y1, int width, int height, short int color){
     unsigned itX, itY;
     int plotX, plotY;
-    for(itY = y1; itY < height; ++itY){
-        for(itX = x1; itX < width; ++itX){
+    for(itY = 0; itY < height; itY++){
+        for(itX = 0; itX < width; ++itX){
             plotX = itX + x1;
             plotY = itY + y1;
             if(checkBounds(plotX, plotY))
@@ -88,8 +88,8 @@ void draw_rectange(int x1, int y1, int width, int height, short int color){
 void draw_image(int start_x, int start_y, int image[], int width, int height){
     unsigned itX, itY;
     int plotX, plotY, ctr = 0;
-    for(itY = start_y; itY < height; ++itY){
-        for(itX = start_x; itX < width; ++itX){
+    for(itY = 0; itY < height; ++itY){
+        for(itX = 0; itX < width; ++itX){
             plotX = itX + start_x;
             plotY = itY + start_y;
             ctr++;
