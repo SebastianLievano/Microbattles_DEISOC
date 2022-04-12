@@ -4,6 +4,8 @@
 #include <time.h>
 
 volatile int pixel_buffer_start;
+char bitCodes[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67};
+
 
 //address map arm.h
 /* This files provides address values that exist in the system */
@@ -110,73 +112,73 @@ void draw_image(int start_x, int start_y, int image[], int width, int height);
 //images.h
 
 int bluePlaneLeft_20x10[200] = {
-	30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,14528,14528,30526,30526,30526,30526,0,0,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,33808,30526,65303,14528,30526,30526,30526,0,34079,0,
-	0,30526,30526,16,0,16,16,16,0,16,16,16,16,16,16,16,16,34079,34079,0,
-	0,30526,16,34079,0,34079,34079,34079,0,34079,34079,65535,34079,34079,34079,34079,34079,0,0,0,
-	65535,16,34079,34079,0,34079,34079,34079,0,34079,65535,34079,34079,34079,34079,16,16,30526,30526,30526,
-	0,30526,16,34079,0,34079,34079,34079,0,34079,34079,65535,16,16,16,30526,30526,30526,30526,30526,
-	0,30526,30526,16,0,16,16,16,0,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,
-	30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526
+    30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,14528,14528,30526,30526,30526,30526,0,0,
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,33808,30526,65303,14528,30526,30526,30526,0,34079,0,
+    0,30526,30526,16,0,16,16,16,0,16,16,16,16,16,16,16,16,34079,34079,0,
+    0,30526,16,34079,0,34079,34079,34079,0,34079,34079,65535,34079,34079,34079,34079,34079,0,0,0,
+    65535,16,34079,34079,0,34079,34079,34079,0,34079,65535,34079,34079,34079,34079,16,16,30526,30526,30526,
+    0,30526,16,34079,0,34079,34079,34079,0,34079,34079,65535,16,16,16,30526,30526,30526,30526,30526,
+    0,30526,30526,16,0,16,16,16,0,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,
+    30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526
 };
 
 int bluePlaneRight_20x10[200] = {
     0,30526,30526,30526,30526,30526,30526,30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,
-	0,0,30526,30526,30526,30526,14561,14561,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	0,34079,0,30526,30526,30526,14561,65271,30526,33808,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	0,34079,34079,16,16,16,16,16,16,16,16,0,16,16,16,0,16,30526,30526,0,
-	0,0,0,34079,34079,34079,34079,34079,65535,34079,34079,0,34079,34079,34079,0,34079,16,30526,0,
-	30526,30526,30526,16,16,34079,34079,34079,34079,65535,34079,0,34079,34079,34079,0,34079,34079,16,65535,
-	30526,30526,30526,30526,30526,16,16,16,65535,34079,34079,0,34079,34079,34079,0,34079,16,30526,0,
-	30526,30526,30526,30526,30526,30526,30526,30526,16,16,16,0,16,16,16,0,16,30526,30526,0,
-	30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526
+    0,0,30526,30526,30526,30526,14561,14561,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    0,34079,0,30526,30526,30526,14561,65271,30526,33808,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    0,34079,34079,16,16,16,16,16,16,16,16,0,16,16,16,0,16,30526,30526,0,
+    0,0,0,34079,34079,34079,34079,34079,65535,34079,34079,0,34079,34079,34079,0,34079,16,30526,0,
+    30526,30526,30526,16,16,34079,34079,34079,34079,65535,34079,0,34079,34079,34079,0,34079,34079,16,65535,
+    30526,30526,30526,30526,30526,16,16,16,65535,34079,34079,0,34079,34079,34079,0,34079,16,30526,0,
+    30526,30526,30526,30526,30526,30526,30526,30526,16,16,16,0,16,16,16,0,16,30526,30526,0,
+    30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526
 };
 
 int redPlaneLeft_20x10[200] = {
     30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,14528,14528,30526,30526,30526,30526,0,0,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,33808,30526,65303,14528,30526,30526,30526,0,63488,0,
-	0,30526,30526,34816,0,34816,34816,34816,0,34816,34816,34816,34816,34816,34816,34816,34816,63488,63488,0,
-	0,30526,34816,63488,0,63488,63488,63488,0,63488,63488,65535,63488,63488,63488,63488,63488,0,0,0,
-	65535,34816,63488,63488,0,63488,63488,63488,0,63488,65535,63488,63488,63488,63488,34816,34816,30526,30526,30526,
-	0,30526,34816,63488,0,63488,63488,63488,0,63488,63488,65535,34816,34816,34816,30526,30526,30526,30526,30526,
-	0,30526,30526,34816,0,34816,34816,34816,0,34816,34816,34816,30526,30526,30526,30526,30526,30526,30526,30526,
-	30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,
-	30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,14528,14528,30526,30526,30526,30526,0,0,
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,33808,30526,65303,14528,30526,30526,30526,0,63488,0,
+    0,30526,30526,34816,0,34816,34816,34816,0,34816,34816,34816,34816,34816,34816,34816,34816,63488,63488,0,
+    0,30526,34816,63488,0,63488,63488,63488,0,63488,63488,65535,63488,63488,63488,63488,63488,0,0,0,
+    65535,34816,63488,63488,0,63488,63488,63488,0,63488,65535,63488,63488,63488,63488,34816,34816,30526,30526,30526,
+    0,30526,34816,63488,0,63488,63488,63488,0,63488,63488,65535,34816,34816,34816,30526,30526,30526,30526,30526,
+    0,30526,30526,34816,0,34816,34816,34816,0,34816,34816,34816,30526,30526,30526,30526,30526,30526,30526,30526,
+    30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,
+    30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526
 };
 
 int redPlaneRight_20x10[200] = {
     0,30526,30526,30526,30526,30526,30526,30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526,
-	0,0,30526,30526,30526,30526,14528,14528,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	0,63488,0,30526,30526,30526,14528,65303,30526,33808,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	0,63488,63488,34816,34816,34816,34816,34816,34816,34816,34816,0,34816,34816,34816,0,34816,30526,30526,0,
-	0,0,0,63488,63488,63488,63488,63488,65535,63488,63488,0,63488,63488,63488,0,63488,34816,30526,0,
-	30526,30526,30526,34816,34816,63488,63488,63488,63488,65535,63488,0,63488,63488,63488,0,63488,63488,34816,65535,
-	30526,30526,30526,30526,30526,34816,34816,34816,65535,63488,63488,0,63488,63488,63488,0,63488,34816,30526,0,
-	30526,30526,30526,30526,30526,30526,30526,30526,34816,34816,34816,0,34816,34816,34816,0,34816,30526,30526,0,
-	30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
-	30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526
+    0,0,30526,30526,30526,30526,14528,14528,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    0,63488,0,30526,30526,30526,14528,65303,30526,33808,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    0,63488,63488,34816,34816,34816,34816,34816,34816,34816,34816,0,34816,34816,34816,0,34816,30526,30526,0,
+    0,0,0,63488,63488,63488,63488,63488,65535,63488,63488,0,63488,63488,63488,0,63488,34816,30526,0,
+    30526,30526,30526,34816,34816,63488,63488,63488,63488,65535,63488,0,63488,63488,63488,0,63488,63488,34816,65535,
+    30526,30526,30526,30526,30526,34816,34816,34816,65535,63488,63488,0,63488,63488,63488,0,63488,34816,30526,0,
+    30526,30526,30526,30526,30526,30526,30526,30526,34816,34816,34816,0,34816,34816,34816,0,34816,30526,30526,0,
+    30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,30526,
+    30526,30526,30526,30526,30526,30526,30526,30526,30526,30526,34816,34816,34816,34816,34816,34816,34816,30526,30526,30526
 };
 
 int bullet_5x5[25] = {
-	65535,52759,31370,44275,65535,
-	54840,52499,37286,26721,59099,
-	46323,39074,47689,37351,57051,
-	63422,45998,43723,54710,65535,
-	65535,65535,65535,65535,65535
+    65535,52759,31370,44275,65535,
+    54840,52499,37286,26721,59099,
+    46323,39074,47689,37351,57051,
+    63422,45998,43723,54710,65535,
+    65535,65535,65535,65535,65535
 };
 
 int planePowerup_7x7[49] = {
     30526,65028,65028,65028,65028,65028,30526,
-	65028,0,0,0,61991,65028,65028,
-	65028,65028,65028,65028,65028,65028,65028,
-	65028,65028,0,0,0,61991,65028,
-	65028,65028,65028,65028,65028,65028,65028,
-	65028,0,0,0,61991,65028,65028,
-	30526,65028,65028,65028,65028,65028,30526
+    65028,0,0,0,61991,65028,65028,
+    65028,65028,65028,65028,65028,65028,65028,
+    65028,65028,0,0,0,61991,65028,
+    65028,65028,65028,65028,65028,65028,65028,
+    65028,0,0,0,61991,65028,65028,
+    30526,65028,65028,65028,65028,65028,30526
 };
 
 //plane.h
@@ -186,12 +188,12 @@ int planePowerup_7x7[49] = {
 #define PLANE_X_SPEED 1
 #define PLANE_INITIAL_X 20
 #define FLOOR_Y 180
-#define BULLET_SPEED 2
+#define BULLET_SPEED 1
 #define BULLET_WIDTH 5
 #define BULLET_HEIGHT 5
 #define POWERUP_WIDTH 7
 #define POWERUP_HEIGHT 7
-#define PLANE_MAX_Y_SPEED 3
+#define PLANE_Y_SPEED 1
 #define PLANE_ACCEL_INC 2
 #define PLANE_MAX_ACCEL 4
 
@@ -213,7 +215,7 @@ struct Plane{
     int dY;     //Vertical velocity of plane
     int accel;  //Vertical acceleration of plane
     int x;      //Position of the plane
-    int y;      
+    int y;
 
     int lastX;
     int lastY;
@@ -255,7 +257,7 @@ void movePlane(struct Plane* plane);
 
 int managePlaneCollision();
 
-int checkCollisions(struct Plane* plane);
+bool checkCollisions(struct Plane* plane);
 
 bool actOnCollisions();
 
@@ -281,7 +283,7 @@ int minInt(int a, int b){
 }
 
 /*
-When two objects are colliding, there must be some overlap in both x and y coords. 
+When two objects are colliding, there must be some overlap in both x and y coords.
 This means the larger width
 */
 bool objectsCollide(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2){
@@ -343,10 +345,11 @@ void clear_screen(){
 
 void wait_for_vsync(){
     volatile int * pixel_ctrl_ptr = (int*)(PIXEL_BUF_CTRL_BASE);
+    int status;
     *pixel_ctrl_ptr = 1;
-    while(1){
-        if(*(pixel_ctrl_ptr + 3) & 0x01) continue;
-        else break;
+    status = *(pixel_ctrl_ptr + 3);
+    while((status & 0x01) != 0){
+        status = *(pixel_ctrl_ptr + 3);
     }
 }
 
@@ -364,8 +367,8 @@ void plot_pixel(int x, int y, short int line_color)
 void draw_rectangle(int x1, int y1, int width, int height, short int color){
     unsigned itX, itY;
     int plotX, plotY;
-    for(itY = y1; itY < height; ++itY){
-        for(itX = x1; itX < width; ++itX){
+    for(itY = 0; itY < height; itY++){
+        for(itX = 0; itX < width; ++itX){
             plotX = itX + x1;
             plotY = itY + y1;
             if(checkBounds(plotX, plotY))
@@ -373,19 +376,23 @@ void draw_rectangle(int x1, int y1, int width, int height, short int color){
         }
     }
 }
-
 void draw_image(int start_x, int start_y, int image[], int width, int height){
     unsigned itX, itY;
     int plotX, plotY, ctr = 0;
-    for(itY = start_y; itY < height; ++itY){
-        for(itX = start_x; itX < width; ++itX){
+    for(itY = 0; itY < height; ++itY){
+        for(itX = 0; itX < width; ++itX){
             plotX = itX + start_x;
             plotY = itY + start_y;
-            ctr++;
             if(checkBounds(plotX, plotY))
                 plot_pixel(plotX, plotY, image[ctr]);
+             ctr++;
         }
     }
+}
+
+void displayScore(int leftScore, int rightScore){
+    *((int*)HEX3_HEX0_BASE) = bitCodes[rightScore];
+    *((int*)HEX5_HEX4_BASE) = bitCodes[leftScore];
 }
 
 //PLANE.C
@@ -397,21 +404,23 @@ int numBullets = 0;
 struct Powerup powerups[2];
 
 
-void planeMain(){
+int main(void){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
     *(pixel_ctrl_ptr + 1) = 0xC8000000;
-    pixel_buffer_start = *(pixel_ctrl_ptr + 1);
+    wait_for_vsync();
+    pixel_buffer_start = *pixel_ctrl_ptr;
     bool isRedLoser;
+
     draw_rectangle(0,0, RESOLUTION_X, FLOOR_Y, SKY_BLUE);
     draw_rectangle(0,FLOOR_Y, RESOLUTION_X, RESOLUTION_Y - FLOOR_Y, FLOOR_GREEN);
-    initPlanes();
-    drawPlanes();
     wait_for_vsync();
-    
+    initPlanes();
+    displayScore(0,0);
     bool isOver = false;
     while(!isOver){
         isRedLoser = planeTurn(pixel_ctrl_ptr);
         //displayRoundWinner(isRedLoser);
+        displayScore(blue.score, red.score);
         resetPlanes();
         if(blue.score == 5 || red.score == 5) break;
     }
@@ -434,9 +443,9 @@ void resetPlanes(){
     red.dX = -PLANE_X_SPEED;
     red.dY = blue.dY = red.accel = blue.accel = 0;
     red.isFlying = blue.isFlying = 0;
-    blue.x = PLANE_INITIAL_X;
-    red.x = RESOLUTION_X - 1 - PLANE_INITIAL_X;
-    red.y = blue.y = FLOOR_Y;
+    blue.x = 5;
+    red.x = 295;
+    red.y = blue.y = FLOOR_Y - PLANE_HEIGHT - 1;
     red.isFiring = blue.isFiring = false;
     red.lastX = red.lastY = blue.lastX = blue.lastY = -1;
     red.shotsLeft = blue.shotsLeft = 0;
@@ -444,6 +453,7 @@ void resetPlanes(){
 
 void drawPlanes(){
     //If dX positive, plane going right
+    //printf("Drawing planes at: Blue: %d, %d, Red: %d, %d", blue.x, blue.y, red.x, red.y);
     if(red.dX > 0) draw_image(red.x, red.y, redPlaneRight_20x10,
                                 PLANE_WIDTH, PLANE_HEIGHT);
     else draw_image(red.x, red.y, redPlaneLeft_20x10,
@@ -461,6 +471,7 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
     bool isRedLoser;
     addNewPowerup(0);
     addNewPowerup(1);
+    addNewPowerup(0);
     while(notDone){
         deletePlanes();
         deleteBullets();
@@ -480,7 +491,7 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
             isRedLoser = false;
             break;
         }
-        if(objectsCollide(  red.x, red.y, PLANE_WIDTH, PLANE_HEIGHT, 
+        if(objectsCollide(  red.x, red.y, PLANE_WIDTH, PLANE_HEIGHT,
                             blue.x, blue.y, PLANE_WIDTH, PLANE_HEIGHT)){
                                 dummy = managePlaneCollision();
                                 if(dummy > -1){
@@ -491,6 +502,7 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
 
         pixel_buffer_start = *(pixel_ctrl_ptr + 1);
     }
+    deletePlanes();
     return isRedLoser;
 }
 
@@ -500,7 +512,7 @@ int managePlaneCollision(){
         red.dX = -red.dX;
         blue.dX = -blue.dX;
         return -1;
-    } else if(red.y > blue.y){
+    } else if(red.y < blue.y){
         red.score++;
         return 0;
     } else {
@@ -510,31 +522,33 @@ int managePlaneCollision(){
 }
 
 void deletePlanes(){
-    if(red.lastX == -1) return;
-    draw_rectangle(red.lastX, red.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
-    draw_rectangle(blue.lastX, blue.lastY, PLANE_WIDTH, PLANE_HEIGHT, BLUE);
+    if(red.lastX != -1) draw_rectangle(red.lastX, red.lastY, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
+    if(blue.lastX != -1) draw_rectangle(blue.lastX, blue.lastY, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
 }
 
 void deleteBullets(){
     int i;
     for(i = 0; i < 10; ++i){
         if(bullets[i].x == -1) continue;
-        draw_rectangle(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, BLUE);
+        draw_rectangle(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, SKY_BLUE);
     }
 }
+
 //Shooting bullets only every 30 frames
 void shootBullets(){
     int i = 0;
+    int direction;
     if(blue.isFiring){
         blue.shotsLeft--;
         if(!blue.shotsLeft) blue.isFiring = false;
-        if(blue.shotsLeft % 30 == 0){
+        if(blue.shotsLeft % 10 == 0){
+            direction = (blue.dX > 0) ? 1 : -1;
             numBullets++;
             for(i = 0; i < 10;  ++i){
                 if(bullets[i].x == -1){
                     bullets[i].dX = 3*blue.dX;
                     bullets[i].y = blue.y;
-                    bullets[i].x = (blue.dX > 0) ? blue.x - 2 : blue.x + 2 + PLANE_WIDTH;
+                    bullets[i].x = (blue.dX > 0) ? blue.x + 5 + PLANE_WIDTH : blue.x - 5;
                 }
             }
         }
@@ -542,13 +556,14 @@ void shootBullets(){
     if(red.isFiring){
         red.shotsLeft--;
         if(!red.shotsLeft) red.isFiring = false;
-        if(red.shotsLeft % 30 == 0){
+        if(red.shotsLeft % 10 == 0){
+            direction = (red.dX > 0) ? 1 : -1;
             numBullets++;
             for(; i < 10;  ++i){
                 if(bullets[i].x == -1){
                     bullets[i].dX = 3*red.dX;
                     bullets[i].y = red.y;
-                    bullets[i].x = (red.dX > 0) ? red.x - 2 : red.x + 2 + PLANE_WIDTH;
+                    bullets[i].x = (red.dX > 0) ? red.x + 5 + PLANE_WIDTH : red.x - 5;
                 }
             }
         }
@@ -557,18 +572,22 @@ void shootBullets(){
 
 
 void movePlane(struct Plane* plane){
-    int* keyPtr = (int*)KEY_BASE;
+       int* keyPtr = (int*)KEY_BASE;
     //Manage acceleration
     short int keyChecker = (plane -> isRed) ? 0x1 : 0x8;
+    if(!plane -> isFlying){
+        if(*keyPtr & keyChecker){
+            plane -> dY = -PLANE_Y_SPEED;
+            plane -> isFlying = true;
+        }
+        return;
+    }
     if(*keyPtr & keyChecker){
-        if(plane -> accel < PLANE_MAX_ACCEL) plane -> accel += PLANE_ACCEL_INC;
-    } else if (plane -> accel > -PLANE_MAX_ACCEL) plane -> accel -= PLANE_ACCEL_INC;
-    //Accelerating plane if accelerating
-    if(ABS(plane -> dY) < PLANE_MAX_Y_SPEED)
-        plane -> dY += plane -> accel;
-    
+        plane -> dY = -PLANE_Y_SPEED;
+    }
+    else plane -> dY = PLANE_Y_SPEED;
     plane -> lastX = plane -> x;
-    plane -> lastY = plane -> y;
+    plane -> lastY = plane -> y ;
     //Plane bounces off x sides
     if(!inBounds(0, RESOLUTION_X - 1, plane -> x + plane -> dX))
         plane -> dX = -(plane -> dX);
@@ -585,6 +604,7 @@ void moveBullets(){
         bullets[i].x += bullets[i].dX;
 
         if(!inBounds(0, RESOLUTION_X, bullets[i].x)){
+            draw_rectangle(bullets[i].x, bullets[i].y, BULLET_WIDTH + 2, BULLET_HEIGHT, SKY_BLUE);
             bullets[i].x = -1;
             numBullets --;
         }
@@ -597,18 +617,24 @@ bool checkCollisions(struct Plane* plane){
     for(i = 0; i < numBullets; ++i){
         if(bullets[i].x == -1) continue;
         if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, bullets[i].x, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT)){
-            return true;   
+            return true;
         }
     }
     for(i = 0; i < 2; ++i){
         if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT)){
             plane -> isFiring = true;
             plane -> shotsLeft = 120;
-            draw_rectangle(powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT, BLUE);
+            draw_rectangle(powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT, SKY_BLUE);
             addNewPowerup(i);
         }
     }
-    if(plane -> isFlying && !(inBounds(0,FLOOR_Y, plane -> y))) return true;
+    if(plane -> isFlying && plane -> y >= FLOOR_Y - PLANE_HEIGHT){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    } else if(plane -> isFlying && plane -> y <= 0){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    }
     return false;
 }
 

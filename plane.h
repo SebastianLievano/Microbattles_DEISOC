@@ -3,7 +3,7 @@
 
 #define PLANE_WIDTH 20
 #define PLANE_HEIGHT 10
-#define PLANE_X_SPEED 1
+#define PLANE_X_SPEED 2
 #define PLANE_INITIAL_X 20
 #define FLOOR_Y 180
 #define BULLET_SPEED 2
@@ -11,9 +11,7 @@
 #define BULLET_HEIGHT 5
 #define POWERUP_WIDTH 7
 #define POWERUP_HEIGHT 7
-#define PLANE_MAX_Y_SPEED 3
-#define PLANE_ACCEL_INC 2
-#define PLANE_MAX_ACCEL 4
+#define PLANE_Y_SPEED 2
 
 #include <stdbool.h>
 

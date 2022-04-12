@@ -50,9 +50,9 @@ void resetPlanes(){
     red.dX = -PLANE_X_SPEED;
     red.dY = blue.dY = red.accel = blue.accel = 0;
     red.isFlying = blue.isFlying = 0;
-    blue.x = PLANE_INITIAL_X;
-    red.x = RESOLUTION_X - 1 - PLANE_INITIAL_X;
-    red.y = blue.y = FLOOR_Y-PLANE_HEIGHT;
+    blue.x = 5;
+    red.x = 295;
+    red.y = blue.y = FLOOR_Y - PLANE_HEIGHT - 1;
     red.isFiring = blue.isFiring = false;
     red.lastX = red.lastY = blue.lastX = blue.lastY = -1;
     red.shotsLeft = blue.shotsLeft = 0;
@@ -140,19 +140,23 @@ void deleteBullets(){
         draw_rectangle(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, BLUE);
     }
 }
+
+
 //Shooting bullets only every 30 frames
 void shootBullets(){
     int i = 0;
+    int direction;
     if(blue.isFiring){
         blue.shotsLeft--;
         if(!blue.shotsLeft) blue.isFiring = false;
-        if(blue.shotsLeft % 30 == 0){
+        if(blue.shotsLeft % 10 == 0){
+            direction = (blue.dX > 0) ? 1 : -1;
             numBullets++;
             for(i = 0; i < 10;  ++i){
                 if(bullets[i].x == -1){
                     bullets[i].dX = 3*blue.dX;
                     bullets[i].y = blue.y;
-                    bullets[i].x = (blue.dX > 0) ? blue.x - 2 : blue.x + 2 + PLANE_WIDTH;
+                    bullets[i].x = (blue.dX > 0) ? blue.x + 5 + PLANE_WIDTH : blue.x - 5;
                 }
             }
         }
@@ -160,13 +164,14 @@ void shootBullets(){
     if(red.isFiring){
         red.shotsLeft--;
         if(!red.shotsLeft) red.isFiring = false;
-        if(red.shotsLeft % 30 == 0){
+        if(red.shotsLeft % 10 == 0){
+            direction = (red.dX > 0) ? 1 : -1;
             numBullets++;
             for(; i < 10;  ++i){
                 if(bullets[i].x == -1){
                     bullets[i].dX = 3*red.dX;
                     bullets[i].y = red.y;
-                    bullets[i].x = (red.dX > 0) ? red.x - 2 : red.x + 2 + PLANE_WIDTH;
+                    bullets[i].x = (red.dX > 0) ? red.x + 5 + PLANE_WIDTH : red.x - 5;
                 }
             }
         }
@@ -174,27 +179,24 @@ void shootBullets(){
 }
 
 
+
 void movePlane(struct Plane* plane){
-    int* keyPtr = (int*)KEY_BASE;
+	   int* keyPtr = (int*)KEY_BASE;
     //Manage acceleration
     short int keyChecker = (plane -> isRed) ? 0x1 : 0x8;
-    plane -> lastX = plane -> x;
-    plane -> lastY = plane -> y;
-    if(!plane -> isFlying){
-        if(*keyPtr & keyChecker){
-            plane -> accel = PLANE_ACCEL_INC;
-            plane -> isFlying = true;
-        }
-        return;
-    }
+	if(!plane -> isFlying){
+		if(*keyPtr & keyChecker){
+			plane -> dY = -PLANE_Y_SPEED;
+			plane -> isFlying = true;
+		}
+		return;
+	}
     if(*keyPtr & keyChecker){
-        if(plane -> accel < PLANE_MAX_ACCEL) plane -> accel -= PLANE_ACCEL_INC;
-    } else if (plane -> accel > -PLANE_MAX_ACCEL) plane -> accel += PLANE_ACCEL_INC;
-    //Accelerating plane if accelerating
-    if(ABS(plane -> dY) < PLANE_MAX_Y_SPEED)
-        plane -> dY += plane -> accel;
+		plane -> dY = -PLANE_Y_SPEED;
+    } 
+	else plane -> dY = PLANE_Y_SPEED;
     plane -> lastX = plane -> x;
-    plane -> lastY = plane -> y;
+    plane -> lastY = plane -> y ;
     //Plane bounces off x sides
     if(!inBounds(0, RESOLUTION_X - 1, plane -> x + plane -> dX))
         plane -> dX = -(plane -> dX);
@@ -202,6 +204,7 @@ void movePlane(struct Plane* plane){
     //Y collisions are checked in checkCollisions as they are game ending
     plane -> y += plane -> dY;
 }
+
 
 void moveBullets(){
     int i;
@@ -211,6 +214,7 @@ void moveBullets(){
         bullets[i].x += bullets[i].dX;
 
         if(!inBounds(0, RESOLUTION_X, bullets[i].x)){
+            draw_rectangle(bullets[i].x, bullets[i].y, BULLET_WIDTH + BULLET_SPEED, BULLET_HEIGHT, SKY_BLUE);
             bullets[i].x = -1;
             numBullets --;
         }
@@ -234,7 +238,13 @@ bool checkCollisions(struct Plane* plane){
             addNewPowerup(i);
         }
     }
-    if(plane -> isFlying && !(inBounds(0,FLOOR_Y, plane -> y))) return false;
+	if(plane -> isFlying && plane -> y >= FLOOR_Y - PLANE_HEIGHT){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    } else if(plane -> isFlying && plane -> y <= 0){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    }
     return true;
 }
 
