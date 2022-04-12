@@ -2,7 +2,7 @@
 #define UTILITY_H
 #include <stdbool.h>
 
-
+#define FLOOR_Y 200
 #define ABS(x) (((x) > 0) ? (x) : -(x))
 
 int maxInt(int a, int b);

@@ -13,6 +13,7 @@
 #define PINK 0xFC18
 #define ORANGE 0xFC00
 #define BLACK 0x0000
+#define TAN 0xAC2B
 #define SKY_BLUE 0x773F
 #define FLOOR_GREEN 0x1E07
 

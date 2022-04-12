@@ -15,6 +15,14 @@ N       planeShooting_?x?           Shooting powerup for plane game (SMALL)
 
 
 */
+
+int cowboyBackground_320x240[76800];
+int redCowboy_20x20[400];
+int blueCowboy_20x20[400];
+int rock_14x14[196];
+int bullet_05x05[25];
+int cactus_14x14[196];
+
 int bluePlaneLeft_20x10[200] = {
 	30526,30526,30526,16,16,16,16,16,16,16,30526,30526,30526,30526,30526,30526,30526,30526,30526,0,
 	30526,30526,30526,30526,0,30526,30526,30526,0,30526,30526,30526,14528,14528,30526,30526,30526,30526,0,0,
