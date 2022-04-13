@@ -32,7 +32,7 @@ bool objectsCollide(int x1, int y1, int width1, int height1, int x2, int y2, int
 
 int getRandom(int min, int max){
     time_t t;
-    srand((unsigned) time(&t));
+    srand((unsigned) time(&t) + randFactor);
     int num = (rand() % (max - min +  1)) + min;
     return num;
 }

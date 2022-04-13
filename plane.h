@@ -36,7 +36,7 @@ struct Plane{
 
     int lastX;
     int lastY;
-} red, blue;
+};
 
 struct Bullet{
     int x;

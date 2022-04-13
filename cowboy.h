@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
+#define MIN_Y 21
 #define COWBOY_WIDTH 20
 #define COWBOY_HEIGHT 20
 #define COWBOY_INITIAL_X 10
@@ -12,22 +13,24 @@
 #define OBSTACLES_WIDTH 14
 #define OBSTACLES_HEIGHT 14
 #define MAX_NUM_BULLET 20
+#define COWBOY_SPEED 3
+#define BULLET_SPEED 3
 
-enum obstacleItems {CACTUS, ROCK};
+enum obstacleItems {CACTUS = 0, ROCK = 1};
 
 struct Cowboy{
     bool isRed;     //true -> player is red, false -> player is blue
-    bool isFiring;
     bool fired;
     
     short int score;
 
     int x;
     int y;      // position of the player 
+    int dX;
     int dY;        // change in y direction 
     int lastX;
     int lastY;
-} red, blue;
+};
 
 struct CowboyBullet{
     int x;
@@ -42,26 +45,22 @@ struct CowboyBullet{
 struct obstacles{
     int x;
     int y;
-    obstacleItems type;
+    enum obstacleItems type;
 };
-
 
 void cowboyMain();
 void initCowboy();
-void resetCowboy();
-void drawCowboy();
-void deleteCowboy();
-void deleteBullets();
-void deleteObstacles();
-void shootBullets();
-void moveCowboy();
 void initObstacles();
-void drawBullet45Up();
-void drawBulletStraight();
-void drawBullet45Down();
-void CACTUSCollision();
-void ROCKCollision();
-int checkCollision();
+void resetCowboy();
+void deleteCowboy();
+void deleteCBullets();
+void readKeys();
+void moveCowboy();
+void moveCBullets();
+void drawCowboy();
+void drawCBullets();
+void checkCollision(struct CowboyBullet* bullets);
+void collisionHandler(struct CowboyBullet* bullets);
 void replaceObstacles();
 
 

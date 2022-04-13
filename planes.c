@@ -11,6 +11,8 @@ int numBullets = 0;
 
 struct Powerup powerups[2];
 
+struct Plane red;
+struct Plane blue;
 
 void planeMain(){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;

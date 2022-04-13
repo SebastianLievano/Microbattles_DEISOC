@@ -92,9 +92,9 @@ void draw_image(int start_x, int start_y, int image[], int width, int height){
         for(itX = 0; itX < width; ++itX){
             plotX = itX + start_x;
             plotY = itY + start_y;
-            ctr++;
             if(checkBounds(plotX, plotY))
                 plot_pixel(plotX, plotY, image[ctr]);
+            ctr++;
         }
     }
 }
