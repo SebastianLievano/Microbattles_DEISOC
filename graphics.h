@@ -18,7 +18,6 @@
 #define SKY_BLUE 0x773F
 #define FLOOR_GREEN 0x1E07
 
-#define ABS(x) (((x) > 0) ? (x) : -(x))
 
 /* Screen size. */
 #define RESOLUTION_X 320

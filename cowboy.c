@@ -43,7 +43,7 @@ void cowboyMain(){
 			redCowboy.fired = false;
 			blueCowboy.fired = false;
 		}
-
+        if(*(int*)SW_BASE & 0x1) break;
     }
     return 0;
 }
@@ -122,7 +122,7 @@ void moveCowboy(struct Cowboy* cowboy){
     cowboy->y += cowboy->dY;
 }
 
-void shootBullets(int x, int y, int dX, int dY){
+void shootCBullets(int x, int y, int dX, int dY){
     int i;
     for(i = 0; i < 20; ++i){
         if(cowboyBullets[i].drawn == false){
@@ -259,7 +259,7 @@ void readKeys(){
         else{
 			printf("Red shooting\n");
             redCowboy.fired = true;
-            shootBullets(redCowboy.x - 5, redCowboy.y, -1, 0);
+            shootCBullets(redCowboy.x - 5, redCowboy.y, -1, 0);
         }
         *keyPtr = 0x1;
     }
@@ -270,7 +270,7 @@ void readKeys(){
         else{
 			printf("Blue shooting\n");
             blueCowboy.fired = true;
-			shootBullets(blueCowboy.x + COWBOY_WIDTH + 5, blueCowboy.y, 1, 0);
+			shootCBullets(blueCowboy.x + COWBOY_WIDTH + 5, blueCowboy.y, 1, 0);
             //shootBullets(COWBOY_INITIAL_X + COWBOY_WIDTH, COWBOY_INITIAL_Y + (COWBOY_HEIGHT/2), 2, 0);
         }
         *keyPtr = 0xf;

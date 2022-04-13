@@ -1,22 +1,69 @@
-#ifndef IMAGESMB
-#define IMAGESMB
-/*
-ADDED   IMAGE NAME          SIZE    PURPOSE
-Y       cowboyBackground_320x240    Main background image for cowboy game
-
-N       planeBackground_320x240     Main background image for plane game         
-N       redPlaneRight_20x10         Red plane going right
-N       redPlaneLeft_20x10          Red plane going left
-N       bluePlaneRight_20x10        Blue plane going right
-N       bluePlaneLeft_20x10         Blue plane going left
-N       planeBullet_?x?             Bullet for plane game (SMALL)
-N       planeShooting_?x?           Shooting powerup for plane game (SMALL)
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
+#define BOARD                 "DE1-SoC"
 
+/* Memory */
+#define DDR_BASE              0x00000000
+#define DDR_END               0x3FFFFFFF
+#define A9_ONCHIP_BASE        0xFFFF0000
+#define A9_ONCHIP_END         0xFFFFFFFF
+#define SDRAM_BASE            0xC0000000
+#define SDRAM_END             0xC3FFFFFF
+#define FPGA_ONCHIP_BASE      0xC8000000
+#define FPGA_ONCHIP_END       0xC803FFFF
+#define FPGA_CHAR_BASE        0xC9000000
+#define FPGA_CHAR_END         0xC9001FFF
 
-*/
+/* Cyclone V FPGA devices */
+#define LEDR_BASE             0xFF200000
+#define HEX3_HEX0_BASE        0xFF200020
+#define HEX5_HEX4_BASE        0xFF200030
+#define SW_BASE               0xFF200040
+#define KEY_BASE              0xFF200050
+#define JP1_BASE              0xFF200060
+#define JP2_BASE              0xFF200070
+#define PS2_BASE              0xFF200100
+#define PS2_DUAL_BASE         0xFF200108
+#define JTAG_UART_BASE        0xFF201000
+#define JTAG_UART_2_BASE      0xFF201008
+#define IrDA_BASE             0xFF201020
+#define TIMER_BASE            0xFF202000
+#define AV_CONFIG_BASE        0xFF203000
+#define PIXEL_BUF_CTRL_BASE   0xFF203020
+#define CHAR_BUF_CTRL_BASE    0xFF203030
+#define AUDIO_BASE            0xFF203040
+#define VIDEO_IN_BASE         0xFF203060
+#define ADC_BASE              0xFF204000
 
+/* Cyclone V HPS devices */
+#define HPS_GPIO1_BASE        0xFF709000
+#define HPS_TIMER0_BASE       0xFFC08000
+#define HPS_TIMER1_BASE       0xFFC09000
+#define HPS_TIMER2_BASE       0xFFD00000
+#define HPS_TIMER3_BASE       0xFFD01000
+#define FPGA_BRIDGE           0xFFD0501C
+
+/* ARM A9 MPCORE devices */
+#define   PERIPH_BASE         0xFFFEC000    // base address of peripheral devices
+#define   MPCORE_PRIV_TIMER   0xFFFEC600    // PERIPH_BASE + 0x0600
+
+/* Interrupt controller (GIC) CPU interface(s) */
+#define MPCORE_GIC_CPUIF      0xFFFEC100    // PERIPH_BASE + 0x100
+#define ICCICR                0x00          // offset to CPU interface control reg
+#define ICCPMR                0x04          // offset to interrupt priority mask reg
+#define ICCIAR                0x0C          // offset to interrupt acknowledge reg
+#define ICCEOIR               0x10          // offset to end of interrupt reg
+/* Interrupt controller (GIC) distributor interface(s) */
+#define MPCORE_GIC_DIST       0xFFFED000    // PERIPH_BASE + 0x1000
+#define ICDDCR                0x00          // offset to distributor control reg
+#define ICDISER               0x100         // offset to interrupt set-enable regs
+#define ICDICER               0x180         // offset to interrupt clear-enable regs
+#define ICDIPTR               0x800         // offset to interrupt processor targets regs
+#define ICDICFR               0xC00         // offset to interrupt configuration regs
 
 static int cowboyBackground_320x240[76800] = {
 	48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,50381,56590,56524,54443,54475,58571,58603,58570,56489,56490,56489,56458,56457,54442,54411,50218,25028,37705,54346,56458,52330,54442,56490,54443,54410,54378,56491,54410,52297,54442,56491,54377,56556,62961,54575,46124,50349,60816,62864,54410,54409,54409,54378,54346,54378,56459,54442,56490,56490,56490,54443,56556,60815,54509,46090,48203,56655,60782,54475,54442,54410,56490,54377,54410,54443,54443,56459,56459,56490,54441,54475,60782,56590,50220,48237,56720,62961,58669,54409,56457,56457,56490,54443,52298,54378,54409,54409,56491,54411,54444,58669,58701,58701,56588,56621,58702,58701,54475,56458,56458,56458,54410,54443,54475,54410,56458,56458,54443,43945,41961,50380,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48268,46090,43978,46025,46025,50218,54411,54411,54411,56490,56490,56458,56490,56491,56491,56491,52265,46024,45992,43911,43944,46058,46058,41832,39752,35591,33446,31365,31333,29252,29284,33413,35559,39752,41865,41898,46027,46091,46090,43945,43945,46025,46024,45992,48072,50185,48073,48137,50218,46025,45992,43880,39719,39752,39785,44042,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,48300,
@@ -657,5 +704,889 @@ int mainBackground_320x240[76800] = {
 	8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8484,8484,8484,8484,8484,8484,8484,8484,8484,8484,8484,10533,10533,10533,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,12646,12646,12646,12646,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,14759,14759,14759,14759,14759,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14823,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14791,14759,14759,14759,14759,14759,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12710,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12678,12646,12646,12646,12646,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,10597,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10565,10533,10533,10533,8484,8484,8484,8484,8484,8484,8484,8484,8484,8484,8484,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452,8452
 };
 
-#endif
+
+#define MIN_Y 21
+#define COWBOY_WIDTH 20
+#define COWBOY_HEIGHT 20
+#define COWBOY_INITIAL_X 10
+#define COWBOY_INITIAL_Y 90
+#define BULLET_WIDTH 5
+#define BULLET_HEIGHT 5
+#define OBSTACLES_WIDTH 14
+#define OBSTACLES_HEIGHT 14
+#define MAX_NUM_BULLET 20
+#define COWBOY_SPEED 3
+#define BULLET_SPEED 3
+
+
+#define FLOOR_Y 200
+#define ABS(x) (((x) > 0) ? (x) : -(x))
+static int randFactor = 0;
+
+int maxInt(int a, int b);
+
+int minInt(int a, int b);
+
+bool objectsCollide(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2);
+
+bool inBounds(int min, int max, int val);
+
+int getRandom(int min, int max);
+
+void displayScore(int scoreLeft, int scoreRight);
+
+/* VGA colors */
+#define WHITE 0xFFFF
+#define YELLOW 0xFFE0
+#define RED 0xF800
+#define GREEN 0x07E0
+#define BLUE 0x001F
+#define CYAN 0x07FF
+#define MAGENTA 0xF81F
+#define GREY 0xC618
+#define PINK 0xFC18
+#define ORANGE 0xFC00
+#define BLACK 0x0000
+#define OLD_TAN 0xc4ac
+#define TAN 0xBCAC
+#define SKY_BLUE 0x773F
+#define FLOOR_GREEN 0x1E07
+
+#define ABS(x) (((x) > 0) ? (x) : -(x))
+
+/* Screen size. */
+#define RESOLUTION_X 320
+#define RESOLUTION_Y 240
+
+static char bitCodes[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67};
+
+extern volatile int pixel_buffer_start;
+
+void draw_line(int x1, int y1, int x2, int y2, short int color);
+
+void clear_screen();
+
+void wait_for_vsync();
+
+void swap(int* a, int* b);
+
+void plot_pixel(int x, int y, short int line_color);
+
+void draw_rectangle(int x1, int y1, int width, int length, short int color);
+
+void draw_image(int start_x, int start_y, int image[], int width, int height);
+enum obstacleItems {CACTUS = 0, ROCK = 1};
+
+struct Cowboy{
+    bool isRed;     //true -> player is red, false -> player is blue
+    bool fired;
+    
+    short int score;
+
+    int x;
+    int y;      // position of the player 
+    int dX;
+    int dY;        // change in y direction 
+    int lastX;
+    int lastY;
+};
+
+struct CowboyBullet{
+    int x;
+    int y;
+    int dX;
+    int dY;
+    int lastX;
+    int lastY;
+    bool drawn;
+};
+
+struct obstacles{
+    int x;
+    int y;
+    enum obstacleItems type;
+};
+
+void cowboyMain();
+void initCowboy();
+void initObstacles();
+void resetCowboy();
+void deleteCowboy();
+void deleteCBullets();
+void readKeys();
+void moveCowboy(struct Cowboy* cowboy);
+void moveCBullets();
+void drawCowboy();
+void drawCBullets();
+void checkCollision(struct CowboyBullet* bullets);
+void collisionHandler(struct CowboyBullet* bullets);
+void replaceObstacles();
+
+
+#define PLANE_WIDTH 20
+#define PLANE_HEIGHT 10
+#define PLANE_X_SPEED 2
+#define PLANE_INITIAL_X 20
+#define BULLET_SPEED 2
+#define BULLET_WIDTH 5
+#define BULLET_HEIGHT 5
+#define POWERUP_WIDTH 7
+#define POWERUP_HEIGHT 7
+#define PLANE_Y_SPEED 2
+
+#include <stdbool.h>
+
+
+
+extern volatile int pixel_buffer_start;
+
+struct Plane{
+    bool isRed;   //True if plane is red, false is plane is blue
+    bool isFiring;    //True if plane has activated shooting powerUp
+    bool isFlying;      //True if plane has "lifted off"
+
+    short int score;
+
+    int shotsLeft;
+    int dX;     //Horizontal velocity of plane
+    int dY;     //Vertical velocity of plane
+    int accel;  //Vertical acceleration of plane
+    int x;      //Position of the plane
+    int y;      
+
+    int lastX;
+    int lastY;
+};
+
+struct Bullet{
+    int x;
+    int y;
+    int dX;
+    int lastX;
+};
+
+struct Powerup{
+    int x;
+    int y;
+};
+
+void planeMain();
+
+void initPlanes();
+
+void resetPlanes();
+
+void addNewPowerup(int idx);
+
+void drawPlanes();
+
+bool planeTurn(volatile int* pixel_ctrl_ptr);
+
+void deletePlanes();
+
+void deleteBullets();
+
+void moveBullets();
+
+void shootBullets();
+
+void movePlane(struct Plane* plane);
+
+int managePlaneCollision();
+
+bool checkCollisions(struct Plane* plane);
+
+bool actOnCollisions();
+
+void drawBullets();
+
+
+//MAIN
+
+volatile int pixel_buffer_start;
+
+int main(void){
+    volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
+    *(pixel_ctrl_ptr + 1) = 0xC8000000;
+    pixel_buffer_start = *pixel_ctrl_ptr;
+    wait_for_vsync();
+	displayScore(0,0);
+    draw_image(0,0, mainBackground_320x240, RESOLUTION_X, RESOLUTION_Y);
+    int* keyPtr = (int*)(KEY_BASE + 0xC);
+	*keyPtr = 0xf;
+    //Manage acceleration
+    while (1){
+        if(*keyPtr & 0x2){
+			planeMain();
+			draw_image(0,0, mainBackground_320x240, RESOLUTION_X, RESOLUTION_Y);
+			*keyPtr = 0xf;
+		} else if(*keyPtr & 0x1){
+			cowboyMain();
+			draw_image(0,0, mainBackground_320x240, RESOLUTION_X, RESOLUTION_Y);
+			*keyPtr = 0xf;
+		}
+    }   
+}
+
+//UTILITY
+//Returns  true if in bounds
+bool inBounds(int min, int max, int val){
+    if(val < min || val > max) return false;
+    else return true;
+}
+
+int maxInt(int a, int b){
+    return (a > b) ? a:b;
+}
+
+int minInt(int a, int b){
+    return (a < b) ? a:b;
+}
+
+/*
+When two objects are colliding, there must be some overlap in both x and y coords. 
+This means the larger width
+*/
+bool objectsCollide(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2){
+    return  (maxInt(x1, x2) < minInt(x1 + width1, x2 + width2)
+                &&
+            maxInt(y1, y2) < minInt(y1 + height1, y2 + height2));
+}
+
+int getRandom(int min, int max){
+    time_t t;
+    srand((unsigned) time(&t) + randFactor);
+    int num = (rand() % (max - min +  1)) + min;
+    return num;
+}
+
+void displayScore(int leftScore, int rightScore){
+    *((int*)HEX3_HEX0_BASE) = bitCodes[rightScore];
+    *((int*)HEX5_HEX4_BASE) = bitCodes[leftScore];
+}
+
+//GRAPHICS
+
+
+void swap(int* a, int* b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+
+void draw_line(int x1, int y1, int x2, int y2, short int color){
+    //Write algorithm here
+    bool isSteep = ABS(y2 - y1) > ABS(x2-x1);
+    if (isSteep){
+        swap(&x1, &y1);
+        swap(&x2, &y2);
+    }
+    
+    if(x1 > x2){
+        swap(&x1, &x2);
+        swap(&y1, &y2);
+    }
+
+    int deltax = x2 - x1;
+    int deltay = ABS(y2 - y1);
+    int error = -(deltax/2);
+    int y = y1;
+    int yStep = (y1 < y2) ? 1 : -1;
+    int x;
+    for(x = x1; x != x2; x++){
+        if(isSteep) plot_pixel(y, x, color);
+        else plot_pixel(x, y, color);
+        error = error + deltay;
+        if(error > 0){
+            y = y + yStep;
+            error = error - deltax;
+        }
+    }
+}
+
+void clear_screen(){
+    draw_rectangle(0,0, RESOLUTION_X, RESOLUTION_Y, BLACK);
+}
+
+void wait_for_vsync(){
+    volatile int * pixel_ctrl_ptr = (int*)(PIXEL_BUF_CTRL_BASE);
+    *pixel_ctrl_ptr = 1;
+    while(1){
+        if(*(pixel_ctrl_ptr + 3) & 0x01) continue;
+        else break;
+    }
+}
+
+bool checkBounds(int x, int y){
+    if(x < 0 || y < 0) return false;
+    if(x >= RESOLUTION_X || y >= RESOLUTION_Y) return false;
+    return true;
+}
+
+void plot_pixel(int x, int y, short int line_color)
+{
+    *(short int *)(pixel_buffer_start + (y << 10) + (x << 1)) = line_color;
+}
+
+void draw_rectangle(int x1, int y1, int width, int height, short int color){
+    unsigned itX, itY;
+    int plotX, plotY;
+    for(itY = 0; itY < height; itY++){
+        for(itX = 0; itX < width; ++itX){
+            plotX = itX + x1;
+            plotY = itY + y1;
+            if(checkBounds(plotX, plotY))
+                plot_pixel(plotX, plotY, color);
+        }
+    }
+}
+
+void draw_image(int start_x, int start_y, int image[], int width, int height){
+    unsigned itX, itY;
+    int plotX, plotY, ctr = 0;
+    for(itY = 0; itY < height; ++itY){
+        for(itX = 0; itX < width; ++itX){
+            plotX = itX + start_x;
+            plotY = itY + start_y;
+            if(checkBounds(plotX, plotY))
+                plot_pixel(plotX, plotY, image[ctr]);
+            ctr++;
+        }
+    }
+}
+
+//PLANE
+
+struct Bullet bullets[10];
+
+int numBullets = 0;
+
+struct Powerup powerups[2];
+
+struct Plane red;
+struct Plane blue;
+
+int managePlaneCollision(){
+    //Bouncing planes off each other
+    if(ABS(red.y - blue.y) < 5){
+        red.dX = -red.dX;
+        blue.dX = -blue.dX;
+        return -1;
+    } else if(red.y < blue.y){
+        red.score++;
+        return 0;
+    } else {
+        blue.score++;
+        return 1;
+    }
+}
+
+void deletePlanes(){
+    if(red.lastX != -1) draw_rectangle(red.lastX, red.lastY, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
+    if(blue.lastX != -1) draw_rectangle(blue.lastX, blue.lastY, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
+}
+
+void deleteBullets(){
+    int i;
+    for(i = 0; i < 10; ++i){
+        if(bullets[i].x == -1) continue;
+        draw_rectangle(bullets[i].lastX, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT, SKY_BLUE);
+    }
+}
+
+//Shooting bullets only every 30 frames
+void shootBullets(){
+    int i = 0;
+    int direction;
+    if(blue.isFiring){
+        blue.shotsLeft--;
+        if(!blue.shotsLeft) blue.isFiring = false;
+        if(blue.shotsLeft % 10 == 0){
+            direction = (blue.dX > 0) ? 1 : -1;
+            numBullets++;
+            for(i = 0; i < 10;  ++i){
+                if(bullets[i].x == -1){
+                    bullets[i].dX = 3*blue.dX;
+                    bullets[i].y = blue.y;
+                    bullets[i].x = (blue.dX > 0) ? blue.x + 5 + PLANE_WIDTH : blue.x - 5;
+                }
+            }
+        }
+    }
+    if(red.isFiring){
+        red.shotsLeft--;
+        if(!red.shotsLeft) red.isFiring = false;
+        if(red.shotsLeft % 10 == 0){
+            direction = (red.dX > 0) ? 1 : -1;
+            numBullets++;
+            for(; i < 10;  ++i){
+                if(bullets[i].x == -1){
+                    bullets[i].dX = 3*red.dX;
+                    bullets[i].y = red.y;
+                    bullets[i].x = (red.dX > 0) ? red.x + 5 + PLANE_WIDTH : red.x - 5;
+                }
+            }
+        }
+    }
+}
+
+
+void movePlane(struct Plane* plane){
+       int* keyPtr = (int*)KEY_BASE;
+    //Manage acceleration
+    short int keyChecker = (plane -> isRed) ? 0x1 : 0x8;
+    if(!plane -> isFlying){
+        if(*keyPtr & keyChecker){
+            plane -> dY = -PLANE_Y_SPEED;
+            plane -> isFlying = true;
+        }
+        return;
+    }
+    if(*keyPtr & keyChecker){
+        plane -> dY = -PLANE_Y_SPEED;
+    }
+    else plane -> dY = PLANE_Y_SPEED;
+    plane -> lastX = plane -> x;
+    plane -> lastY = plane -> y ;
+    //Plane bounces off x sides
+    if(!inBounds(0, RESOLUTION_X - 1, plane -> x + plane -> dX))
+        plane -> dX = -(plane -> dX);
+    plane -> x += plane -> dX;
+    //Y collisions are checked in checkCollisions as they are game ending
+    plane -> y += plane -> dY;
+}
+
+void moveBullets(){
+    int i;
+    for(i = 0; i < 10; ++i){
+        if(bullets[i].x == -1) continue;
+        bullets[i].lastX = bullets[i].x;
+        bullets[i].x += bullets[i].dX;
+
+        if(!inBounds(0, RESOLUTION_X, bullets[i].x)){
+            draw_rectangle(bullets[i].x - 5, bullets[i].y - 1, BULLET_WIDTH + 10, BULLET_HEIGHT + 2, SKY_BLUE);
+            bullets[i].x = -1;
+            numBullets --;
+        }
+    }
+}
+
+bool checkCollisions(struct Plane* plane){
+    //Check for bullet collisions
+    int i;
+    for(i = 0; i < numBullets; ++i){
+        if(bullets[i].x == -1) continue;
+        if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, bullets[i].x, bullets[i].y, BULLET_WIDTH, BULLET_HEIGHT)){
+            return true;
+        }
+    }
+    for(i = 0; i < 2; ++i){
+        if(objectsCollide(plane -> x, plane -> y, PLANE_WIDTH, PLANE_HEIGHT, powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT)){
+            plane -> isFiring = true;
+            plane -> shotsLeft = 120;
+            draw_rectangle(powerups[i].x, powerups[i].y, POWERUP_WIDTH, POWERUP_HEIGHT, SKY_BLUE);
+            addNewPowerup(i);
+        }
+    }
+    if(plane -> isFlying && plane -> y >= FLOOR_Y - PLANE_HEIGHT){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    } else if(plane -> isFlying && plane -> y <= 0){
+        draw_rectangle(plane -> x, plane -> y, PLANE_WIDTH + 1, PLANE_HEIGHT, SKY_BLUE);
+        return true;
+    }
+    return false;
+}
+
+void drawBullets(){
+    int i;
+    for(i = 0; i < 10; ++i){
+        if(bullets[i].x == -1) continue;
+        draw_image(bullets[i].x, bullets[i].y, bullet_5x5, BULLET_WIDTH, BULLET_HEIGHT);
+    }
+}
+
+void addNewPowerup(int idx){
+    powerups[idx].x = getRandom(20, RESOLUTION_X - 20);
+    powerups[idx].y = getRandom(20, FLOOR_Y - 20);
+    draw_image(powerups[idx].x, powerups[idx].y, planePowerup_7x7, POWERUP_WIDTH, POWERUP_WIDTH);
+}
+
+void initPlanes(){
+    red.isRed = true;
+    blue.isRed = false;
+    red.score = blue.score = 0;
+    resetPlanes();
+    int i;
+    for(i = 0; i < 10; ++i){
+        bullets[i].x = -1;
+    }
+}
+
+void resetPlanes(){
+    blue.dX = PLANE_X_SPEED;
+    red.dX = -PLANE_X_SPEED;
+    red.dY = blue.dY = red.accel = blue.accel = 0;
+    red.isFlying = blue.isFlying = 0;
+    blue.x = 5;
+    red.x = 295;
+    red.y = blue.y = FLOOR_Y - PLANE_HEIGHT - 1;
+    red.isFiring = blue.isFiring = false;
+    red.lastX = red.lastY = blue.lastX = blue.lastY = -1;
+    red.shotsLeft = blue.shotsLeft = 0;
+}
+
+void drawPlanes(){
+    //If dX positive, plane going right
+    //printf("Drawing planes at: Blue: %d, %d, Red: %d, %d", blue.x, blue.y, red.x, red.y);
+    if(red.dX > 0) draw_image(red.x, red.y, redPlaneRight_20x10,
+                                PLANE_WIDTH, PLANE_HEIGHT);
+    else draw_image(red.x, red.y, redPlaneLeft_20x10,
+                                PLANE_WIDTH, PLANE_HEIGHT);
+    if(blue.dX > 0) draw_image(blue.x, blue.y, bluePlaneRight_20x10,
+                                PLANE_WIDTH, PLANE_HEIGHT);
+    else draw_image(blue.x, blue.y, bluePlaneLeft_20x10,
+                                PLANE_WIDTH, PLANE_HEIGHT);
+}
+
+
+bool planeTurn(volatile int* pixel_ctrl_ptr){
+    bool notDone = true;
+    int dummy;
+    bool isRedLoser;
+    addNewPowerup(0);
+    addNewPowerup(1);
+    addNewPowerup(0);
+    while(notDone){
+        deletePlanes();
+        deleteBullets();
+        movePlane(&red);
+        movePlane(&blue);
+        moveBullets();
+        shootBullets();
+        drawPlanes();
+        drawBullets();
+        wait_for_vsync();
+        if(checkCollisions(&blue)){
+            red.score++;
+            isRedLoser = true;
+            break;
+        } else if (checkCollisions(&red)){
+            blue.score++;
+            isRedLoser = false;
+            break;
+        }
+        if(objectsCollide(  red.x, red.y, PLANE_WIDTH, PLANE_HEIGHT,
+                            blue.x, blue.y, PLANE_WIDTH, PLANE_HEIGHT)){
+                                dummy = managePlaneCollision();
+                                if(dummy > -1){
+                                    isRedLoser = dummy;
+                                    break;
+                                }
+                            }
+        pixel_buffer_start = *(pixel_ctrl_ptr + 1);
+		if(*(int*)SW_BASE & 0x1) break;
+    }
+    deletePlanes();
+    return isRedLoser;
+}
+
+
+void planeMain(){    
+    volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
+    *(pixel_ctrl_ptr + 1) = 0xC8000000;
+    wait_for_vsync();
+    pixel_buffer_start = *pixel_ctrl_ptr;
+    bool isRedLoser;
+
+    draw_rectangle(0,0, RESOLUTION_X, FLOOR_Y, SKY_BLUE);
+    draw_rectangle(0,FLOOR_Y, RESOLUTION_X, RESOLUTION_Y - FLOOR_Y, FLOOR_GREEN);
+    wait_for_vsync();
+    initPlanes();
+    displayScore(0,0);
+    bool isOver = false;
+    while(!isOver){
+        isRedLoser = planeTurn(pixel_ctrl_ptr);
+        displayScore(blue.score, red.score);
+        resetPlanes();
+        if(blue.score == 5 || red.score == 5) break;
+		if(*(int*)SW_BASE & 0x1) break;
+    }
+	printf("done planes\n");
+}
+
+
+//COWBOY
+
+
+struct obstacles activeObstacles[8];
+struct CowboyBullet cowboyBullets[MAX_NUM_BULLET];
+struct Cowboy blueCowboy;
+struct Cowboy redCowboy;
+int obstacleIdx;
+int numBulletsLeft = 20;
+
+void cowboyMain(){
+    volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
+    *(pixel_ctrl_ptr + 1) = 0xC8000000;
+    pixel_buffer_start = *pixel_ctrl_ptr;
+    wait_for_vsync();
+    bool gameOver = false; 
+        // draw background
+    draw_image(0, 0, cowboyBackground_320x240, 320, 240);
+    initCowboy();
+    initObstacles();
+	displayScore(blueCowboy.score, redCowboy.score);
+    while(!gameOver){
+        deleteCowboy();
+        deleteCBullets();
+        readKeys();
+        moveCowboy(&redCowboy);
+        moveCowboy(&blueCowboy);
+        moveCBullets();
+        drawCowboy();
+        drawCBullets();
+        wait_for_vsync();
+        pixel_buffer_start = *(pixel_ctrl_ptr + 1);
+		displayScore(blueCowboy.score, redCowboy.score);
+        if(redCowboy.score == 5 || blueCowboy.score == 5){
+            gameOver = true;
+            break;
+        }
+		if(redCowboy.fired && blueCowboy.fired){
+			redCowboy.fired = false;
+			blueCowboy.fired = false;
+		}
+		if(*(int*)SW_BASE & 0x1) break;
+    }
+}
+
+void resetCowboy(){
+    blueCowboy.x = COWBOY_INITIAL_X;
+    redCowboy.x = RESOLUTION_X - COWBOY_INITIAL_X - COWBOY_WIDTH - 1;
+    redCowboy.y = blueCowboy.y = COWBOY_INITIAL_Y;
+    redCowboy.fired = blueCowboy.fired = false;
+    redCowboy.dY = blueCowboy.dY = COWBOY_SPEED;
+    redCowboy.lastY = blueCowboy.lastY = -1;
+    int i;
+	deleteCBullets();
+    for(i = 0; i < 20; ++i){
+        cowboyBullets[i].drawn = false;
+    }
+}
+
+void initCowboy(){
+    redCowboy.isRed = true;
+    blueCowboy.isRed = false;
+    redCowboy.score = blueCowboy.score = 0;
+    resetCowboy();
+}
+
+void initObstacles(){
+    int i;
+    int randomObstacle;
+	printf("initi");
+    // 8 obstacles allowed in total 
+    for(i=0; i<8; i++){
+		randomObstacle = getRandom(0, 1);
+		randFactor += 10;
+        // get random position in the bounds of {85, 10}, {235, 10}, {85, 200}, {235, 200}
+        activeObstacles[i].x = getRandom(85, 235);
+        activeObstacles[i].y = getRandom(MIN_Y, RESOLUTION_Y - OBSTACLES_HEIGHT - 1);
+        activeObstacles[i].type = (enum obstacleItems) randomObstacle;
+        // draw image for rock at random position
+        if(randomObstacle)draw_image(activeObstacles[i].x, activeObstacles[i].y, rock_14x14, OBSTACLES_WIDTH, OBSTACLES_HEIGHT);
+        // draw image for cactus at random position
+        else if (!randomObstacle) draw_image(activeObstacles[i].x, activeObstacles[i].y, cactus_14x14, OBSTACLES_WIDTH, OBSTACLES_HEIGHT);
+    }
+}
+
+void drawCowboy(){
+    draw_image(redCowboy.x, redCowboy.y, redCowboy_20x20, COWBOY_WIDTH, COWBOY_HEIGHT);
+    draw_image(blueCowboy.x, blueCowboy.y, blueCowboy_20x20, COWBOY_WIDTH, COWBOY_HEIGHT);    
+}
+
+void drawCBullets(){
+    int i = 0;
+    for(i = 0; i < MAX_NUM_BULLET; ++i){
+        if(cowboyBullets[i].drawn)
+            draw_image(cowboyBullets[i].x, cowboyBullets[i].y, bullet_05x05, BULLET_WIDTH, BULLET_HEIGHT);  
+    }
+}
+
+void deleteCowboy(){
+    draw_rectangle(redCowboy.lastX, redCowboy.lastY, COWBOY_WIDTH, COWBOY_HEIGHT, TAN);
+    draw_rectangle(blueCowboy.lastX, blueCowboy.lastY, COWBOY_WIDTH, COWBOY_HEIGHT, TAN);
+}
+
+void deleteCBullets(){
+    int i;
+    for(i = 0; i < 20; ++i){
+        if(cowboyBullets[i].drawn == true){
+            draw_rectangle(cowboyBullets[i].lastX, cowboyBullets[i].lastY, BULLET_WIDTH, BULLET_HEIGHT, TAN);
+        }
+    }
+}
+
+void moveCowboy(struct Cowboy* cowboy){
+	cowboy -> lastX = cowboy -> x;
+	cowboy -> lastY = cowboy -> y;
+    if(cowboy->y <= MIN_Y || cowboy->y >= RESOLUTION_Y - COWBOY_HEIGHT) cowboy->dY = (cowboy->dY > 0) ? -COWBOY_SPEED : COWBOY_SPEED;
+    cowboy->y += cowboy->dY;
+}
+
+void shootCBullets(int x, int y, int dX, int dY){
+    int i;
+    for(i = 0; i < 20; ++i){
+        if(cowboyBullets[i].drawn == false){
+            cowboyBullets[i].x = x;
+            cowboyBullets[i].y = y;
+            cowboyBullets[i].dX = dX*BULLET_SPEED;
+			cowboyBullets[i].drawn = true;
+            cowboyBullets[i].dY = dY;
+            break;
+        }
+    }
+}
+
+void deleteObstacles(){
+    draw_rectangle(activeObstacles[obstacleIdx].x, activeObstacles[obstacleIdx].y, OBSTACLES_WIDTH, OBSTACLES_HEIGHT, TAN);
+}
+
+void replaceObstacles(){
+    int i;
+    int count;
+    bool valid = false;
+    deleteObstacles();
+    int randomObstacle = getRandom(CACTUS, ROCK);
+	int newObstacleX = getRandom(85, 235);
+    int newObstacleY = getRandom(MIN_Y, RESOLUTION_Y - OBSTACLES_HEIGHT - 1);
+    activeObstacles[obstacleIdx].type = (enum obstacleItems) randomObstacle;
+
+    for(i = 0; i < 8; ++i){
+        if(newObstacleX == activeObstacles[i].x && newObstacleY == activeObstacles[i].y){
+            newObstacleX = getRandom(85, 235);
+            newObstacleY = getRandom(MIN_Y, RESOLUTION_Y - OBSTACLES_HEIGHT - 1);
+            i = 0;
+        }
+    }
+    activeObstacles[obstacleIdx].x = newObstacleX;
+    activeObstacles[obstacleIdx].y = newObstacleY;
+
+    if(activeObstacles[obstacleIdx].type == CACTUS){
+        draw_image(activeObstacles[obstacleIdx].x, activeObstacles[obstacleIdx].y, cactus_14x14, OBSTACLES_WIDTH, OBSTACLES_HEIGHT);   
+    }
+    else if(activeObstacles[obstacleIdx].type == ROCK){
+        draw_image(activeObstacles[obstacleIdx].x, activeObstacles[obstacleIdx].y, rock_14x14, OBSTACLES_WIDTH, OBSTACLES_HEIGHT);   
+    }
+}
+
+void collisionHandler(struct CowboyBullet* bullets){
+    int topYBound = activeObstacles[obstacleIdx].y + activeObstacles[obstacleIdx].y * 0.3;
+    int middleYBound = activeObstacles[obstacleIdx].y + activeObstacles[obstacleIdx].y * 0.3 + activeObstacles[obstacleIdx].y * 0.4;
+    int bottomYBound = activeObstacles[obstacleIdx].y + OBSTACLES_HEIGHT;
+    int middleXBound = activeObstacles[obstacleIdx].x + (OBSTACLES_WIDTH)/2;
+    int obstacleType = activeObstacles[obstacleIdx].type;
+
+	
+    replaceObstacles();
+	
+	if(obstacleType == CACTUS){
+		// bullet hit the left side, dX = -1, hit the right side, dX = 1
+		bullets->dX = (inBounds(activeObstacles[obstacleIdx].x, middleXBound, bullets->x)) ? -BULLET_SPEED : BULLET_SPEED;
+		if(inBounds(activeObstacles[obstacleIdx].y, topYBound, bullets->y)) bullets->dY = -BULLET_SPEED;     // hit top 30% of obstacle -> reflect 45 degrees up
+		else if(inBounds(topYBound, middleYBound, bullets->y)) bullets->dY = 0;                   // hit middle 40% of obstacle -> reflect straight back
+		else if(inBounds(middleYBound, bottomYBound, bullets->y)) bullets->dY = BULLET_SPEED;
+		else bullets -> dY = 0;
+		// hit bottom 30% of obstacle -> reflect 45 degrees down
+	}
+    if(obstacleType == ROCK){
+        int i;
+        for(i = 0; i < 20; ++i){
+            if(cowboyBullets[i].drawn == false && cowboyBullets[i+1].drawn == false){
+				
+                // create 2 new bullets if available
+                cowboyBullets[i].x = cowboyBullets[i+1].x = bullets -> x;
+                cowboyBullets[i].y = cowboyBullets[i+1].y = bullets->y;
+                cowboyBullets[i].dX = cowboyBullets[i+1].dX = (bullets->dX > 0) ? BULLET_SPEED : -BULLET_SPEED;;
+                cowboyBullets[i].dY = BULLET_SPEED;
+				cowboyBullets[i+1].dY = -BULLET_SPEED;
+				cowboyBullets[i].drawn = cowboyBullets[i+1].drawn = true;
+				break;
+            }
+        }
+    }
+}
+
+void checkCollision(struct CowboyBullet* bullets){
+    int i, j;
+    for(i = 0; i < 8; ++i){
+        obstacleIdx = i;
+        // check if bullet hit any obstacles
+        if(objectsCollide(bullets->x, bullets->y, BULLET_WIDTH, BULLET_HEIGHT, activeObstacles[i].x, activeObstacles[i].y, OBSTACLES_WIDTH, OBSTACLES_HEIGHT)){
+            collisionHandler(bullets);
+        }
+	}
+
+        // check if bullet hit red player
+	if(objectsCollide(bullets->x, bullets->y, BULLET_WIDTH, BULLET_HEIGHT, redCowboy.x, redCowboy.y, COWBOY_WIDTH, COWBOY_HEIGHT)){
+            draw_rectangle(bullets -> x, bullets -> y, BULLET_WIDTH + 2, BULLET_HEIGHT + 2, TAN);
+			blueCowboy.score ++;
+            resetCowboy();
+       }
+
+        // check if bullet hit blue player
+		if(objectsCollide(bullets->x, bullets->y, BULLET_WIDTH, BULLET_HEIGHT, blueCowboy.x, blueCowboy.y, COWBOY_WIDTH, COWBOY_HEIGHT)){
+			draw_rectangle(bullets -> x, bullets -> y, BULLET_WIDTH + 2, BULLET_HEIGHT + 2, TAN);
+            redCowboy.score ++;
+            resetCowboy();
+        }
+    
+}
+
+void moveCBullets(){
+    int i;
+    for(i = 0; i < 20; ++i){
+        if(cowboyBullets[i].drawn == true){
+            cowboyBullets[i].lastX = cowboyBullets[i].x;
+            cowboyBullets[i].lastY = cowboyBullets[i].y;            
+            cowboyBullets[i].x += cowboyBullets[i].dX;
+            cowboyBullets[i].y += cowboyBullets[i].dY;
+            checkCollision(&cowboyBullets[i]);
+            if(!inBounds(0, RESOLUTION_X, cowboyBullets[i].x) || !inBounds(MIN_Y, RESOLUTION_Y, cowboyBullets[i].y)){
+                draw_rectangle(cowboyBullets[i].x, cowboyBullets[i].y, BULLET_WIDTH + 5, BULLET_HEIGHT + 5, TAN);
+                cowboyBullets[i].drawn = false;
+            }
+        }
+    }
+}
+
+void readKeys(){
+    int* keyPtr = (int*)(KEY_BASE + 0xC);
+    if(*keyPtr & 0x1){
+        if(redCowboy.fired == true){
+            redCowboy.dY = -redCowboy.dY;
+        }
+        else{
+			printf("Red shooting\n");
+            redCowboy.fired = true;
+            shootCBullets(redCowboy.x - 5, redCowboy.y, -1, 0);
+        }
+        *keyPtr = 0x1;
+    }
+    if(*keyPtr & 0x8){
+        if(blueCowboy.fired == true){
+            blueCowboy.dY = -blueCowboy.dY;
+        }
+        else{
+			printf("Blue shooting\n");
+            blueCowboy.fired = true;
+			shootCBullets(blueCowboy.x + COWBOY_WIDTH + 5, blueCowboy.y, 1, 0);
+            //shootBullets(COWBOY_INITIAL_X + COWBOY_WIDTH, COWBOY_INITIAL_Y + (COWBOY_HEIGHT/2), 2, 0);
+        }
+        *keyPtr = 0xf;
+    }
+}
+
 
