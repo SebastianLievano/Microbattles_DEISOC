@@ -86,7 +86,6 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
         shootBullets();
         drawPlanes();
         drawBullets();
-        wait_for_vsync();
         if(checkCollisions(&blue)){
             red.score++;
             isRedLoser = true;
@@ -104,6 +103,7 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
                                     break;
                                 }
                             }
+        wait_for_vsync();
 
         pixel_buffer_start = *(pixel_ctrl_ptr + 1);
     }
