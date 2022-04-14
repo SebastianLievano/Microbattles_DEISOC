@@ -1288,7 +1288,8 @@ bool planeTurn(volatile int* pixel_ctrl_ptr){
         pixel_buffer_start = *(pixel_ctrl_ptr + 1);
 		if(*(int*)SW_BASE & 0x1) break;
     }
-    deletePlanes();
+    draw_rectangle(blue.x, blue.y, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
+	draw_rectangle(red.x, red.y, PLANE_WIDTH, PLANE_HEIGHT, SKY_BLUE);
     return isRedLoser;
 }
 
